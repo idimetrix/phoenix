@@ -128,7 +128,9 @@ enum ChatCompletionMessageRole {
   AI
 }
 
-union ChatCompletionSubscriptionPayload = TextChunk | ToolCallChunk | FinishedChatCompletion
+interface ChatCompletionSubscriptionPayload {
+  datasetExampleId: GlobalID
+}
 
 input ClearProjectInput {
   id: GlobalID!
@@ -861,7 +863,8 @@ type ExportedFile {
   fileName: String!
 }
 
-type FinishedChatCompletion {
+type FinishedChatCompletion implements ChatCompletionSubscriptionPayload {
+  datasetExampleId: GlobalID
   span: Span!
   errorMessage: String
 }
@@ -876,7 +879,8 @@ type FloatInvocationParameter implements InvocationParameterBase {
   defaultValue: Float
 }
 
-type FunctionCallChunk {
+type FunctionCallChunk implements ChatCompletionSubscriptionPayload {
+  datasetExampleId: GlobalID
   name: String!
   arguments: String!
 }
@@ -1591,7 +1595,8 @@ input TemplateOptions {
   language: TemplateLanguage!
 }
 
-type TextChunk {
+type TextChunk implements ChatCompletionSubscriptionPayload {
+  datasetExampleId: GlobalID
   content: String!
 }
 
@@ -1612,7 +1617,8 @@ type TimeSeriesDataPoint {
   value: Float
 }
 
-type ToolCallChunk {
+type ToolCallChunk implements ChatCompletionSubscriptionPayload {
+  datasetExampleId: GlobalID
   id: String!
   function: FunctionCallChunk!
 }
