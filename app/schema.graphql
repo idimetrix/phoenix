@@ -128,6 +128,22 @@ enum ChatCompletionMessageRole {
   AI
 }
 
+input ChatCompletionOverDatasetInput {
+  messages: [ChatCompletionMessageInput!]!
+  model: GenerativeModelInput!
+  invocationParameters: [InvocationParameterInput!]! = []
+  tools: [JSON!]
+  template: TemplateOptions
+  apiKey: String = null
+  datasetId: GlobalID!
+  datasetVersionId: GlobalID = null
+}
+
+type ChatCompletionSubscriptionError implements ChatCompletionSubscriptionPayload {
+  datasetExampleId: GlobalID
+  message: String!
+}
+
 interface ChatCompletionSubscriptionPayload {
   datasetExampleId: GlobalID
 }
@@ -1566,6 +1582,7 @@ type StringListInvocationParameter implements InvocationParameterBase {
 
 type Subscription {
   chatCompletion(input: ChatCompletionInput!): ChatCompletionSubscriptionPayload!
+  chatCompletionOverDataset(input: ChatCompletionOverDatasetInput!): ChatCompletionSubscriptionPayload!
 }
 
 type SystemApiKey implements ApiKey & Node {
